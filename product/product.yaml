@@ -1,0 +1,11 @@
+_ > nanoagent.plugin.v0001.ProductConfig:
+tagline: "Edit a game save at the byte level and keep the game happy"
+summary: "A binary reverse-engineering drill on Lanternfall, a fictional game. The agent gets five .sav files and a read-only inspect command, works out a format with a magic number, varints, type-length-value records, a CRC-32 and a name-keyed XOR mask, then sets gold to 999,999 and adds an Ember Key without changing anything else. A strict reference parser decides the result."
+highlights:
+  - "Traps built in: two gold fields, a checksum to recompute, a mask to reapply, and a gold cap"
+  - "Five different saves: an existing Ember Key, gold already at the cap, an empty inventory, a multi-byte name and unknown records"
+  - "The verifier compares every field and every byte of the other records, and never calls a model"
+steps:
+  - "Choose which of the five saves to edit"
+  - "The agent inspects the files and reverse-engineers the format"
+  - "It writes the edited save and the reference parser checks it"
