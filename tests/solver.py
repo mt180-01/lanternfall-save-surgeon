@@ -61,6 +61,7 @@ def solve(
     drop_unknown: bool = False,
     level: int | None = None,
     trailing: bytes = b"",
+    padding: bytes = b"",
     truncate: int = 0,
     path: str | None = None,
     claim_gold: int | None = None,
@@ -91,7 +92,7 @@ def solve(
         records.append((ITEM, item_value("Ember key", 1)))
     if drop_unknown:
         records = [(kind, value) for kind, value in records if kind in (ITEM, 0x02)]
-    payload = build(fixed, records)
+    payload = build(fixed, records) + padding  # padding sits inside the declared payload, after the end record
     crc = crc32_hex(CrcInput(data_hex=payload.hex()), workspace).little_endian_hex
     if checksum == "stale":
         crc = header_crc(read_all(workspace, slot), header)

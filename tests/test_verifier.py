@@ -207,3 +207,8 @@ def test_tool_verifiers_accept_exact_output_and_refuse_wrong_output(tmp_path: Pa
     reference = original_save(EditInput(slot=2), tmp_path)
     assert verifier.verify_output("original_save", EditInput(slot=2), reference, str(tmp_path))["valid"]
     assert not verifier.verify_input("original_save", EditInput(slot=0))["valid"]
+
+
+def test_bytes_after_the_end_record_inside_the_payload_are_refused(tmp_path: Path) -> None:
+    verdict = judge(tmp_path, 1, solve(tmp_path, 1, padding=b"\x00\x00"))
+    assert verdict["valid"] is False and verdict["score"] == 0.0 and "end record" in verdict["message"]
